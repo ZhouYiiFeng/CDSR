@@ -21,7 +21,7 @@ if __name__ == '__main__':
         while not t.terminate():
             t.train()
             if t.epoch > args.epochs_encoder:
-                test_psnr, log_dct = t.test3()
+                test_psnr, log_dct = t.test(args.test_path)
                 for k, v in log_dct.items():
                     checkpoint.tb_logger.add_scalar(f'psnr/{k}', v, t.iteration)
 

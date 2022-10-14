@@ -8,7 +8,7 @@ Based on the designs of degradation extraction, existing blind SR approaches can
 1. Supervised Kernel Prediction (SKP) methods leverage explicit or implicit ways to predict blur kernels, and then employ the kernel stretching strategy to provide the degradation information for non-blind SR networks. 
 2. Unsupervised Degradation Prediction (UDP): Instead of requiring supervision from the ground-truth kernel label, UDP leverages the degradation embedding which can naturally avoid the drawback of SKP.
 
-As the most representative approach, DASR investigates the degradation representation in an unsupervised manner through contrastive learning.
+As the most representative approach, [DASR](https://github.com/The-Learning-And-Vision-Atelier-LAVA/DASR) investigates the degradation representation in an unsupervised manner through contrastive learning.
 Although DASR has outperformed some SKP methods within the easy degradation, there is still a gap between DASR and the latest SKP in more complex scenarios. 
 
 ## Motivation
@@ -29,6 +29,12 @@ The previous methods which only employ a small receptive field or naive encoder 
 ![Tab1](Figs/table1.PNG)
 
 ## For training and testing
+### 1. Prepare training data 
+
+1.1 Download the [DIV2K](https://data.vision.ee.ethz.ch/cvl/DIV2K/)  dataset and the [Flickr2K](http://cv.snu.ac.kr/research/EDSR/Flickr2K.tar) dataset.
+
+1.2 Combine the HR images from these two datasets in `your_data_path/DF2K/HR` to build the DF2K dataset. 
+refer to [DASR](https://github.com/The-Learning-And-Vision-Atelier-LAVA/DASR)
 
 For training using `main_patchdasr.py`:
 
@@ -55,3 +61,6 @@ We also provide the ckpts to reproduce our results in our paper. Put them in the
 }
 ```
 
+## Acknowledgements
+This code is built on [EDSR (PyTorch)](https://github.com/thstkdgus35/EDSR-PyTorch), [IKC](https://github.com/yuanjunchai/IKC), [MoCo](https://github.com/facebookresearch/moco) and [DASR](https://github.com/The-Learning-And-Vision-Atelier-LAVA/DASR).  
+We thank the authors for sharing the codes.

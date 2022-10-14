@@ -47,6 +47,8 @@ parser.add_argument('--no_augment', action='store_true',
                     help='do not use data augmentation')
 parser.add_argument('--test_datasets_name', type=str, default='B100',
                     help='patch local blur test dataset name')
+parser.add_argument('--test_path', type=str, default='SRTestset',
+                    help='patch local blur test dataset name')
 parser.add_argument('--gmode', type=int, default=1,
                     help='patch local mode ')
 parser.add_argument('--gnoise', type=int, default=0,
