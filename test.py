@@ -496,11 +496,10 @@ class TestMAnet():
 
 if __name__ == '__main__':
     tm = TestMAnet(args)
-    # tm.test_global()
+    tm.test_global()
     # tm.gen_u100_imgs()
-    tm.test_unseen_global()
+    # tm.test_unseen_global()
     # tm.test_global_lpips()
     # tm.gen_u100_imgs()
     # tm.test_runtime()
     # tm.test()
-    # tm.testAproxLocal()

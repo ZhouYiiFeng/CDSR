@@ -55,17 +55,6 @@ class Trainer():
         self.loss.start_log()
         self.model.train()
 
-        # degrade = util.SRMDPreprocessing(
-        #     self.scale[0],
-        #     kernel_size=self.args.blur_kernel,
-        #     blur_type=self.args.blur_type,
-        #     sig_min=self.args.sig_min,
-        #     sig_max=self.args.sig_max,
-        #     lambda_min=self.args.lambda_min,
-        #     lambda_max=self.args.lambda_max,
-        #     noise=self.args.noise
-        # )
-
         degrade = util.SRMDPreprocessing(
             scale=int(self.scale[0]),
             random=True,
@@ -150,18 +139,6 @@ class Trainer():
                     self.ckp.tb_logger.add_scalar('l1 loss', losses_sr.avg, self.iteration)
 
         self.loss.end_log(len(self.loader_train))
-
-        # # save model
-        # target = self.model.get_model()
-        # model_dict = target.state_dict()
-        # keys = list(model_dict.keys())
-        # for key in keys:
-        #     if 'E.encoder_k' in key or 'queue' in key:
-        #         del model_dict[key]
-        # torch.save(
-        #     model_dict,
-        #     os.path.join(self.ckp.dir, 'model', 'model_{}.pt'.format(epoch))
-        # )
 
     def test(self, test_path="/your/data/path/SRTestset"):
         self.ckp.write_log('\nEvaluation:')
@@ -250,78 +227,7 @@ class Trainer():
 
         return psnr_si, rtn_log_dic
 
-    def test(self):
-        self.ckp.write_log('\nEvaluation:')
-        self.ckp.add_log(torch.zeros(1, len(self.scale)))
-        self.model.eval()
-        timer_test = utility.timer()
-        psrn_ave = 0.0
-        test_para = [1, 2, 3, 4, 5]
-        timer_test = utility.timer()
-        b100_hr_dir = "/your/data/path/SR_Datasets/images/sr_testing/B100"
-        # b100_lr_dir = "/your/data/path/B100_degrade_x%d" % self.args.scale[0]
-        b100_lr_dir = "/your/data/path/B100_degrade"
-        b100_hr = sorted(glob.glob(os.path.join(b100_hr_dir, "*.png")))
-        scale = self.args.scale[0]
-        test_times = 0
-        with torch.no_grad():
-            for noi in [0]:
-                for ts in test_para:
-                    test_times += 1
-                    eval_psnr = 0
-                    eval_ssim = 0
-                    test_lr_dir = os.path.join(b100_lr_dir, "mode_%d_noise_%d_lr" % (ts, noi))
-                    # test_lr_dir = os.path.join(b100_lr_dir, "mode_%d_loc_noise_%d_lr_n10_b40" % (ts, noi))
-                    print(test_lr_dir)
-                    b100_lr = sorted(glob.glob(os.path.join(test_lr_dir, "*.png")))
 
-                    for id, filename in enumerate(b100_hr):
-                        img_hr = cv2.imread(filename)
-                        img_lr = cv2.imread(b100_lr[id])
-                        img_hr_tensor = np2Tensor(img_hr).unsqueeze(0)
-                        img_hr_tensor = self.crop_border2(img_hr_tensor, scale).cuda()
-                        img_lr_tensor = np2Tensor(img_lr).unsqueeze(0).cuda()
-
-                        timer_test.tic()
-                        if self.args.model == 'blindsrMANet':
-                            sr, _ = self.model(img_lr_tensor)
-                        else:
-                            sr = self.model(img_lr_tensor)
-                        timer_test.hold()
-
-                        sr = utility.quantize(sr, self.args.rgb_range)
-                        hr = utility.quantize(img_hr_tensor, self.args.rgb_range)
-
-                        # metrics
-                        eval_psnr += utility.calc_psnr2(
-                            sr, hr, scale, self.args.rgb_range,
-                            benchmark=True
-                        )
-                        eval_ssim += utility.calc_ssim(
-                            sr, hr, scale,
-                            benchmark=True
-                        )
-
-                        # ckp.log[-1, idx_scale] = eval_psnr / len(loader_test)
-                    self.ckp.write_log(
-                        '[Epoch {}---{} x{} sigma/mode {:.1f}]\tPSNR: {:.3f} SSIM: {:.4f}'.format(
-                            self.args.resume,
-                            self.args.data_test,
-                            scale,
-                            ts,
-                            eval_psnr / len(b100_lr),
-                            eval_ssim / len(b100_lr),
-                        ))
-                    psrn_ave += eval_psnr / len(b100_lr)
-            psrn_ave = psrn_ave * 1.0 / test_times
-            self.ckp.write_log(
-                '[Epoch {}---{} x{} ave] \tPSNR: {:.3f}'.format(
-                    self.args.resume,
-                    self.args.data_test,
-                    scale,
-                    psrn_ave
-                ))
-            return psrn_ave
     def crop_border(self, img_hr, scale):
         b, c, h, w = img_hr.size()
 
