@@ -169,8 +169,8 @@ class FuseBLK(nn.Module):
     def __init__(self, n_feat, kernel_size, reduction):
         super(FuseBLK, self).__init__()
 
-        self.dqa1 = DQA(n_feat, n_feat, kernel_size, reduction)
-        self.dqa2 = DQA(n_feat, n_feat, kernel_size, reduction)
+        self.da_conv1 = DQA(n_feat, n_feat, kernel_size, reduction)
+        self.da_conv2 = DQA(n_feat, n_feat, kernel_size, reduction)
         self.conv1 = nn.Conv2d(n_feat, n_feat, kernel_size, stride=1, padding=(kernel_size//2))
         self.conv2 = nn.Conv2d(n_feat, n_feat, kernel_size, stride=1, padding=(kernel_size//2))
 
@@ -182,9 +182,9 @@ class FuseBLK(nn.Module):
         :param x[1]: degradation representation: B * C
         '''
 
-        out = self.relu(self.dqa1(x))
+        out = self.relu(self.da_conv1(x))
         out = self.relu(self.conv1(out))
-        out = self.relu(self.dqa2([out, x[1]]))
+        out = self.relu(self.da_conv2([out, x[1]]))
         out = self.conv2(out) + x[0]
 
         return out
@@ -199,11 +199,11 @@ class SFT_Layer(nn.Module):
 					nn.Linear(256, nf),
 					nn.Sigmoid()
 				)
-        self.fuse = FuseBLK(nf, kernel_size=3, reduction=2)
+        self.dab = FuseBLK(nf, kernel_size=3, reduction=2)
 
     def forward(self, feature_maps, para_maps):
         para_maps = self.fc(para_maps)
-        x = self.fuse([feature_maps, para_maps])
+        x = self.dab([feature_maps, para_maps])
         return x
 
 

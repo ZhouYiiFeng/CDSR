@@ -39,13 +39,13 @@ refer to [DASR](https://github.com/The-Learning-And-Vision-Atelier-LAVA/DASR)
 For training using `main_patchdasr.py`:
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python3 main.py --dir_data=/root/DF2k/HR  --model=CDSR --scale=2 --blur_type=aniso_gaussian  --noise=0  --sig_min=0.35   --sig_max=5  --batch_size=32   --save=cdsr  --epochs_encoder=-1 --n_GPUs=2 --freeze_epoch 600 --sv_mode 0
+CUDA_VISIBLE_DEVICES=0 python3 main.py --dir_data=/root/DF2k/HR  --model=CDSR --scale=2 --blur_type=aniso_gaussian  --noise=0  --sig_min=0.35   --sig_max=5  --batch_size=32   --save=cdsr  --epochs_encoder=-1 --n_GPUs=1 --freeze_epoch 600 --sv_mode 0
 ```
 
 For testing using `main_patchdasr.py`:
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python3 test.py --dir_data=/root/DF2k/HR  --model=CDSR --scale=2 --blur_type=aniso_gaussian  --noise=0 --pre_train experiment/cdsr_x2_bicubic_aniso/model/model_492_psnr_36.17.pt --sv_mode 0 --n_GPUs=2
+CUDA_VISIBLE_DEVICES=0 python3 test.py --dir_data=/root/DF2k/HR  --model=CDSR --scale=2 --blur_type=aniso_gaussian  --noise=0 --pre_train experiment/cdsr_x2_bicubic_aniso/model/model_492_psnr_36.17.pt --sv_mode 0 --n_GPUs=1
 ```
 
 ```

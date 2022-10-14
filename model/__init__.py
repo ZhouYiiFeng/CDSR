@@ -30,12 +30,6 @@ class Model(nn.Module):
         if not args.cpu and args.n_GPUs > 1:
             self.model = nn.DataParallel(self.model, range(args.n_GPUs))
 
-        # self.load(
-        #     ckp.dir,
-        #     pre_train=args.pre_train,
-        #     resume=args.resume,
-        #     cpu=args.cpu
-        # )
         self.reg_load(
             ckp.dir,
             pre_train=args.pre_train,
@@ -89,7 +83,6 @@ class Model(nn.Module):
             kwargs = {'map_location': lambda storage, loc: storage}
         else:
             kwargs = {}
-
         if resume == -1:
             self.get_model().load_state_dict(
                 torch.load(os.path.join(apath, 'model', 'model_latest.pt'), **kwargs),
