@@ -47,11 +47,16 @@ For testing using `main_patchdasr.py`:
 ```bash
 CUDA_VISIBLE_DEVICES=0 python3 test.py --dir_data=/root/DF2k/HR  --model=CDSR --scale=2 --blur_type=aniso_gaussian  --noise=0 --pre_train experiment/cdsr_x2_bicubic_aniso/model/model_492_psnr_36.17.pt --sv_mode 0 --n_GPUs=2
 ```
-"Your/path/to/SRTestset"  contains 
-    - Set5_x2(x3;x4) 
-    - Set14_x2(x3;x4) 
-    - B100_x2(x3;x4) 
-    - Urban100_x2(x3;x4)
+
+```
+Your/path/to/SRTestset"  contains 
+    - Set5_x2     (x3;x4) 
+    - Set14_x2    (x3;x4) 
+    - B100_x2     (x3;x4) 
+    - Urban100_x2 (x3;x4)
+
+```
+
 
 We also provide the ckpts to reproduce our results in our paper. Put them in the dir of `./experiments`.
 [BaiduYunPan](https://pan.baidu.com/s/1h9s7e3bzzUb-BwCvlEpZQA )  code: vywq 
