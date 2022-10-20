@@ -1,5 +1,7 @@
 # Joint Learning Content and Degradation Aware Embedding for Blind Super-Resolution
-**[[Arxiv]](https://arxiv.org/abs/2208.13436)**
+> Joint Learning Content and Degradation Aware Embedding for Blind Super-Resolution
+
+**[[Arxiv]](https://arxiv.org/abs/2208.13436)** **[[Code]](https://github.com/ZhouYiiFeng/CDSR/)**
 ## News
 :bell: We are happy to announce that CDSR was accepted at **ACM MM22**. :bell:
 
@@ -36,13 +38,13 @@ The previous methods which only employ a small receptive field or naive encoder 
 1.2 Combine the HR images from these two datasets in `your_data_path/DF2K/HR` to build the DF2K dataset. 
 refer to [DASR](https://github.com/The-Learning-And-Vision-Atelier-LAVA/DASR)
 
-For training using `main_patchdasr.py`:
+For training using `main.py`:
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python3 main.py --dir_data=/root/DF2k/HR  --model=CDSR --scale=2 --blur_type=aniso_gaussian  --noise=0  --sig_min=0.35   --sig_max=5  --batch_size=32   --save=cdsr  --epochs_encoder=-1 --n_GPUs=1 --freeze_epoch 600 --sv_mode 0
 ```
 
-For testing using `main_patchdasr.py`:
+For testing using `test.py`:
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python3 test.py --dir_data=/root/DF2k/HR  --model=CDSR --scale=2 --blur_type=aniso_gaussian  --noise=0 --pre_train experiment/cdsr_x2_bicubic_aniso/model/model_492_psnr_36.17.pt --sv_mode 0 --n_GPUs=1
@@ -59,7 +61,8 @@ Your/path/to/SRTestset"  contains
 
 
 We also provide the ckpts to reproduce our results in our paper. Put them in the dir of `./experiments`.
-[BaiduYunPan](https://pan.baidu.com/s/1h9s7e3bzzUb-BwCvlEpZQA )  code: vywq 
+[BaiduYunPan](https://pan.baidu.com/s/1h9s7e3bzzUb-BwCvlEpZQA )  
+*code*: vywq 
 
 ## Citation
 ```
